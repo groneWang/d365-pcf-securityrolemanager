@@ -39,7 +39,8 @@ export class SecurityRoleManager implements ComponentFramework.StandardControl<I
             id: context.parameters.entityId.raw?.toString() ?? null,
             businessUnitId: businessUnit?.id,
             businessUnitName: businessUnit?.name ?? null,
-            crossBusinessUnitAssignmentEnabled: isCrmOnline,
+            // crossBusinessUnitAssignmentEnabled: isCrmOnline,
+            crossBusinessUnitAssignmentEnabled: false,
             roleNamesFilter,
         }
 

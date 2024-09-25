@@ -23,16 +23,63 @@ export class SecurityRoleService {
     }
 
     public async associateSecurityRole(roleId: string): Promise<void> {
-        const url = this.createAssociateUrl()
-        const data = this.createRoleAssociationObject(roleId)
+        // const url = this.createAssociateUrl()
+        // const data = this.createRoleAssociationObject(roleId)
+        // console.log(data);
+        // await this.httpService.POST(url, data)
+        const { id } = this
+        
+        let userId = this.handleId(id);
 
-        await this.httpService.POST(url, data)
+        console.log(`userId:${userId}`);
+        console.log(`roleId:${roleId}`);
+        // 创建一个包含所需参数的对象  
+        let inputParams = {
+            userId: userId, // 使用变量  
+            roleId: roleId
+        };
+
+        // 将对象转换为JSON字符串  
+        let inputString = JSON.stringify(inputParams);
+
+        // 创建newdata对象，并使用变量作为Input的值  
+        const newdata = {
+            "Api": "UserRole/AssociateSecurityRole",
+            "Input": inputString, // 使用JSON字符串  
+            "LangId": 2052
+        };
+
+        await this.httpService.POST('new_systemuser', newdata)
     }
 
     public async disassociateSecurityRoles(roleId: string): Promise<void> {
-        const url = this.createDissociateUrl(roleId)
+        // const url = this.createDissociateUrl(roleId)
 
-        await this.httpService.DELETE(url)
+        // await this.httpService.DELETE(url)
+
+        const { id } = this
+        
+        let userId = this.handleId(id);
+
+        console.log(`userId:${userId}`);
+        console.log(`roleId:${roleId}`);
+        // 创建一个包含所需参数的对象  
+        let inputParams = {
+            userId: userId, // 使用变量  
+            roleId: roleId
+        };
+
+        // 将对象转换为JSON字符串  
+        let inputString = JSON.stringify(inputParams);
+
+        // 创建newdata对象，并使用变量作为Input的值  
+        const newdata = {
+            "Api": "UserRole/DisassociateSecurityRole",
+            "Input": inputString, // 使用JSON字符串  
+            "LangId": 2052
+        };
+
+        await this.httpService.POST('new_systemuser', newdata)
     }
 
     private async retrieveAllRoles(): Promise<SecurityRole[]> {
@@ -45,7 +92,7 @@ export class SecurityRoleService {
             name: `${entity.name} - ${entity.businessunitid.name}`,
             businessUnitId: entity.businessunitid.businessunitid,
         }))
-        .sort((a, b) => a.name > b.name ? 1 : -1) // Ordering by the roll name with business unit name at the end
+            .sort((a, b) => a.name > b.name ? 1 : -1) // Ordering by the roll name with business unit name at the end
     }
 
     public buildQueryToRetrieveRoles(isCrossBusinessUnitEnabled: boolean, filterRoleNames: string[]): string {
